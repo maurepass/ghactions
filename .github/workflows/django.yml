@@ -65,6 +65,5 @@ jobs:
 #          DEPLOY_SYSTEM_PRIVATE_KEY: ${{ secrets.DEPLOY_SYSTEM_PRIVATE_KEY }}
 #          DEPLOY_STAGING_PRIVATE_KEY: ${{ secrets.DEPLOY_STAGING_PRIVATE_KEY }}
         run: |
-#          mkdir -p "$HOME/.ssh"
-#          echo "$DEPLOY_KNOWN_HOST" > ~/.ssh/known_hosts
+          pwd
           fab stage deploy:branch=main
