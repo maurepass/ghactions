@@ -16,10 +16,10 @@ class BaseConfig(object):
         self.env.settings = "ghactions.settings"
 
         self.env.path = "%s" % self.env.project_dir
-        self.env.forward_agent = True
+        self.env.forward_agent = False
         # You might want to add to your .bashrc ssh-add ~/.ssh/id_rsa
         # to make use of the forward_agent
-        self.env.use_ssh_config = True
+        self.env.use_ssh_config = False
         self.env.pip_version = "21.3.1"
         self.env.virtualenv_path = "~/venv"
         self.env.virtualenv_args = "--python=python3"
