@@ -43,11 +43,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install SSH Key
-          uses: shimataro/ssh-key-action@v2
-          with:
-            key: ${{ secrets.SSH_PRIVATE_KEY }}
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Adding Known Hosts
-          run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - name: Prepare before deploy
         run: |
           sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
