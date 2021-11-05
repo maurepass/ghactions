@@ -8,8 +8,8 @@ class BaseConfig(object):
         self.env = _AttributeDict()
 
         self.env.git_server = "git@github.com"
-        self.env.git_repo = "Brelag-Schweiz-AG/STYLER_Backend.git"
-        self.env.git_branch = "master"
+        self.env.git_repo = "maurepass/ghactions"
+        self.env.git_branch = "main"
 
         self.env.project_dir = "ghactions"
         self.env.project_name = "ghactions"
@@ -36,8 +36,6 @@ class BaseConfig(object):
         """by default all hosts have all roles"""
         self.env.roledefs = {
             "webserver": self.env.hosts,
-            "worker": self.env.hosts,
-            "extra": self.env.hosts
         }
 
     def get_excluded_files(self):
