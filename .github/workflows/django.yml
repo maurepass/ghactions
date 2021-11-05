@@ -16,15 +16,49 @@ jobs:
         python-version: [3.9]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        python manage.py test
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests
+        run: |
+          python manage.py test
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Prepare before deploy
+        run: |
+          sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          mkdir -p ~/.ssh
+      - name: Deploy staging
+#        env:
+#          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+#          DEPLOY_HOSTS: ${{ secrets.DEPLOY_HOSTS }}
+#          DEPLOY_HOST_NAMES: ${{ secrets.DEPLOY_HOST_NAMES }}
+#          DEPLOY_KNOWN_HOST: ${{ secrets.DEPLOY_KNOWN_HOST }}
+#          DEPLOY_USE_CHRONY: "true"
+#          DEPLOY_STAGING_SYSTEM_PRIVATE_KEY: ${{ secrets.DEPLOY_STAGING_PRIVATE_KEY }}
+#          DEPLOY_SYSTEM_PRIVATE_KEY: ${{ secrets.DEPLOY_SYSTEM_PRIVATE_KEY }}
+#          DEPLOY_STAGING_PRIVATE_KEY: ${{ secrets.DEPLOY_STAGING_PRIVATE_KEY }}
+        run: |
+          mkdir -p "$HOME/.ssh"
+          echo "$DEPLOY_KNOWN_HOST" > ~/.ssh/known_hosts
+          fab stage deploy:branch=main
