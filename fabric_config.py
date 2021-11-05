@@ -16,7 +16,7 @@ class BaseConfig(object):
         self.env.settings = "ghactions.settings"
 
         self.env.path = "%s" % self.env.project_dir
-        self.env.forward_agent = False
+        self.env.forward_agent = True
         # You might want to add to your .bashrc ssh-add ~/.ssh/id_rsa
         # to make use of the forward_agent
         self.env.use_ssh_config = False
