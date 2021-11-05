@@ -246,7 +246,7 @@ def managepy(command, **kwargs):
             # backwards compatibility
             _default_settings = '%s.settings.%s' % (env.project_name, env.envname)
 
-        if env['envname'] is 'local':
+        if env['envname'] == 'local':
             # we are executing on localhost - could use os
             settings_args = os.environ.get("DJANGO_SETTINGS_MODULE", _default_settings)
 
