@@ -62,9 +62,12 @@ jobs:
       - name: Prepare before deploy
         run: |
           sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
+          pip --version
           python -m pip install --upgrade pip
+          pip --version
           pip install -r requirements.txt
           mkdir -p ~/.ssh
+          pip freeze
       - name: Deploy staging
         run: |
           pwd
