@@ -80,6 +80,6 @@ jobs:
   production_deploy:
     needs: [build]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.head_ref == '*release*"
+    if: github.ref == 'refs/heads/main' && github.head_ref == '*release*`
     steps:
       - run: echo ${{ github.ref }}
