@@ -19,12 +19,12 @@ jobs:
 #      - run: echo ${{ github.event_path }}
 #      - run: echo ${{ github.head_ref }}
 #      - run: echo ${{ github.job }}
-#      - run: ehco ${{ github.repository }}
-      - run: ehco ${{ github.repository_owner }}
-      - run: ehco ${{ github.sha }}
-      - run: ehco ${{ github.token }}
-      - run: ehco ${{ github.workflow }}
-      - run: ehco ${{ github.workspace }}
+      - run: echo ${{ github.repository }}
+      - run: echo ${{ github.repository_owner }}
+      - run: echo ${{ github.sha }}
+      - run: echo ${{ github.token }}
+      - run: echo ${{ github.workflow }}
+      - run: echo ${{ github.workspace }}
 
 
 
