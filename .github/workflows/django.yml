@@ -73,8 +73,8 @@ jobs:
 
 
   production_deploy:
-    needs: [build]
+    needs: [build, staging_deploy]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.head_ref == '*release*'
+    if: github.ref == 'refs/heads/main' && github.head_ref == ''
     steps:
       - run: echo ${{ github.ref }}
