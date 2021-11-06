@@ -40,7 +40,7 @@ jobs:
 #        run: |
 #          python manage.py test
 
-  deploy:
+  staging_deploy:
     needs: [build]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -75,3 +75,11 @@ jobs:
 #        run: |
 #          pwd
 #          fab stage deploy:branch=main
+
+
+  production_deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.head_ref == '*release*"
+    steps:
+      - run: echo ${{ github.ref }}
