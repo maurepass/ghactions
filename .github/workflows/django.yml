@@ -10,6 +10,21 @@ jobs:
     steps:
       - run: echo "Deploying to production server on branch $GITHUB_REF"
       - run: echo ${{ github.ref }}
+      - run: echo ${{ github.action }}
+      - run: echo ${{ github.action_path }}
+      - run: echo ${{ github.actor }}
+      - run: echo ${{ github.base_ref }}
+      - run: echo ${{ github.event }}
+      - run: echo ${{ github.event_name }}
+      - run: echo ${{ github.event_path }}
+      - run: echo ${{ github.head_ref }}
+      - run: echo ${{ github.job }}
+      - run: ehco ${{ github.repository }}
+      - run: ehco ${{ github.repository_owner }}
+      - run: ehco ${{ github.sha }}
+      - run: ehco ${{ github.token }}
+      - run: ehco ${{ github.workflow }}
+      - run: ehco ${{ github.workspace }}
 
 
 
