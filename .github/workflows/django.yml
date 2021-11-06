@@ -1,30 +1,36 @@
-name: Manually triggered workflow
+name: my workflow
 on:
   push:
     branches: [main]
 
 jobs:
-  prod-check:
-    if: ${{ github.ref == 'refs/heads/main' }}
+  one:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Deploying to production server on branch $GITHUB_REF"
-#      - run: echo ${{ github.ref }}
-#      - run: echo ${{ github.action }}
-#      - run: echo ${{ github.action_path }}
-#      - run: echo ${{ github.actor }}
-#      - run: echo ${{ github.base_ref }}
-#      - run: echo ${{ github.event }}
-#      - run: echo ${{ github.event_name }}
-#      - run: echo ${{ github.event_path }}
-#      - run: echo ${{ github.head_ref }}
-#      - run: echo ${{ github.job }}
-      - run: echo ${{ github.repository }}
-      - run: echo ${{ github.repository_owner }}
-      - run: echo ${{ github.sha }}
-      - run: echo ${{ github.token }}
-      - run: echo ${{ github.workflow }}
-      - run: echo ${{ github.workspace }}
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJSON(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJSON(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJSON(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJSON(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJSON(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
 
 
 
