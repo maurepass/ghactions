@@ -376,10 +376,6 @@ class Deployment(object):
         with warn_only():
             run("echo $SSH_AUTH_SOCK")
             run("eval `ssh-agent -s`")
-            run("cat ~/.ssh/known_hosts")
-            run("ssh-keyscan -t rsa -H github.com >> ~/.ssh/known_hosts")
-            run("cat ~/.ssh/known_hosts")
-
         fetch(branch_name=branch)
         checkout(branch_name=branch)
         pull()  # in certain circumstances reset --hard doesn't update, thus forcing pull BUT after checkout
