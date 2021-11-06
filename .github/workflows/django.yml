@@ -62,6 +62,8 @@ jobs:
       - name: Prepare before deploy
         run: |
           sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
+          eval `ssh-agent -s`
+          ssh-add
           ssh-add -L
           pip --version
           python -m pip install --upgrade pip
