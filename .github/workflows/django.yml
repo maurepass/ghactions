@@ -10,8 +10,6 @@ on:
         description: 'location'
         required: false
         default: 'The Octoverse'
-  push:
-    branches: [ main ]
 
 jobs:
   say_hello:
