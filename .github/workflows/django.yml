@@ -1,6 +1,7 @@
 name: Django CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
   pull_request:
@@ -45,12 +46,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Create SSH config
-        run: |
-          mkdir ~/.ssh
-          echo $SSH_CONFIG >> ~/.ssh/config
-        env:
-          SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
+#      - name: Create SSH config
+#        run: |
+#          mkdir ~/.ssh
+#          echo $SSH_CONFIG >> ~/.ssh/config
+#        env:
+#          SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
