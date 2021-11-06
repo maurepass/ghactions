@@ -375,8 +375,8 @@ class Deployment(object):
         set_permissions()
         with warn_only():
             run("echo $SSH_AUTH_SOCK")
-            run("ssh-add -L")
             run("ssh -T git@github.com")
+            run("ssh-add -L")
         fetch(branch_name=branch)
         checkout(branch_name=branch)
         pull()  # in certain circumstances reset --hard doesn't update, thus forcing pull BUT after checkout
