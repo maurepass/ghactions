@@ -194,7 +194,7 @@ def pull():
 def fetch(branch_name='master'):
     with cd(env['path']):
         print("About to git fetch - this requires ssh keys to be installed")
-        run('GIT_SSH_COMMAND="ssh -vvv" git fetch --all')
+        run('git fetch --all')
 
 
 @runs_once
@@ -373,6 +373,11 @@ class Deployment(object):
         set_engine_branch(engine_branch)
         run('pwd')
         set_permissions()
+        with warn_only():
+            run("echo $SSH_AUTH_SOCK")
+            run("ssh-agent")
+            run("ssh -T git@github.com -vvv")
+            run("ssh-add -L")
         fetch(branch_name=branch)
         checkout(branch_name=branch)
         pull()  # in certain circumstances reset --hard doesn't update, thus forcing pull BUT after checkout
