@@ -376,6 +376,7 @@ class Deployment(object):
         with warn_only():
             run("echo $SSH_AUTH_SOCK")
             run("eval `ssh-agent -s`")
+            run("ssh-keyscan -t rsa -H github.com >> ~/.ssh/known_hosts")
             run("ssh-add")
             run("ssh -T git@github.com -vvv")
             run("ssh-add -L")
