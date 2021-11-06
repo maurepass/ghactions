@@ -375,7 +375,7 @@ class Deployment(object):
         set_permissions()
         with warn_only():
             run("echo $SSH_AUTH_SOCK")
-            run("ssh-agent")
+            run("eval `ssh-agent -s`")
             run("ssh -T git@github.com -vvv")
             run("ssh-add -L")
         fetch(branch_name=branch)
