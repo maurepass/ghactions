@@ -38,7 +38,7 @@ jobs:
   staging_deploy:
     needs: [build]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/next'
     steps:
       - run: echo ${{ github.ref }}
 
@@ -75,6 +75,6 @@ jobs:
   production_deploy:
     needs: [build, staging_deploy]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.head_ref == ''
+    if: github.ref == 'refs/heads/main'
     steps:
       - run: echo ${{ github.ref }}
