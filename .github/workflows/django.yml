@@ -10,71 +10,68 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJSON(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJSON(steps) }}
-        run: echo "$STEPS_CONTEXT"
-#      - uses: actions/checkout@v2
-#      - name: Set up Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.9
-#      - name: Install Dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install -r requirements.txt
-#      - name: Run Tests
-#        run: |
-#          python manage.py test
+#      - name: Dump GitHub context
+#        env:
+#          GITHUB_CONTEXT: ${{ toJSON(github) }}
+#        run: echo "$GITHUB_CONTEXT"
+#      - name: Dump job context
+#        env:
+#          JOB_CONTEXT: ${{ toJSON(job) }}
+#        run: echo "$JOB_CONTEXT"
+#      - name: Dump steps context
+#        env:
+#          STEPS_CONTEXT: ${{ toJSON(steps) }}
+#        run: echo "$STEPS_CONTEXT"
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests
+        run: |
+          python manage.py test
 
   staging_deploy:
     needs: [build]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/next'
-    steps:
-      - run: echo ${{ github.ref }}
-
-#      - uses: actions/checkout@v2
-#      - name: Set up Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.9
-#      - name: Create SSH config
-#        run: |
-#          mkdir ~/.ssh
-#          echo $SSH_CONFIG >> ~/.ssh/config
-#        env:
-#          SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
-#      - name: Install SSH Key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-#      - name: Adding Known Hosts
-#        run: ssh-keyscan -p 2222 -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-#      - name: Prepare before deploy
-#        run: |
-#          sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
-#          python -m pip install --upgrade pip
-#          pip install -r requirements.txt
-#          mkdir -p ~/.ssh
-#      - name: Deploy staging
-#        run: |
-#          pwd
-#          fab stage deploy:branch=main
-
-
-  production_deploy:
-    needs: [build, staging_deploy]
-    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - run: echo ${{ github.ref }}
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Create SSH config
+        run: |
+          mkdir ~/.ssh
+          echo $SSH_CONFIG >> ~/.ssh/config
+        env:
+          SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p 2222 -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      - name: Prepare before deploy
+        run: |
+          sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          mkdir -p ~/.ssh
+      - name: Deploy staging
+        run: |
+          pwd
+          fab stage deploy:branch=main
+
+#  production_deploy:
+#    needs: [build, staging_deploy]
+#    runs-on: ubuntu-latest
+#    if: github.ref == 'refs/heads/main'
+#    steps:
+#      - run: echo ${{ github.ref }}
