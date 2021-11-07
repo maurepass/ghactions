@@ -53,6 +53,8 @@ jobs:
           echo $SSH_CONFIG >> ~/.ssh/config
         env:
           SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
+      - name: Cat ssh config
+        run: echo ~/.ssh/config
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
