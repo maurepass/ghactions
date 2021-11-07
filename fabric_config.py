@@ -16,10 +16,10 @@ class BaseConfig(object):
         self.env.settings = "ghactions.settings"
 
         self.env.path = "%s" % self.env.project_dir
-        self.env.forward_agent = True
+        self.env.forward_agent = False
         # You might want to add to your .bashrc ssh-add ~/.ssh/id_rsa
         # to make use of the forward_agent
-        self.env.use_ssh_config = False
+        self.env.use_ssh_config = True
         self.env.pip_version = "21.3.1"
         self.env.virtualenv_path = "~/venv"
         self.env.virtualenv_args = "--python=python3"
@@ -46,12 +46,12 @@ class StageConfig(BaseConfig):
     def __init__(self):
         super(StageConfig, self).__init__()
         self.env.settings = "ghactions.settings"
-        self.env.hosts = ["ghactions_stage@ghactions.deployed.space:2222"]
+        self.env.hosts = ["ghactions"]
         self.env.envname = "stage"
         self.env.roledefs = {
             "webserver": self.env.hosts,
         }
-        self.env.vhost = "ghactions.deployed.space"
+        # self.env.vhost = "ghactions.deployed.space"
         self.env.requirements_file = "requirements.txt"
 
 

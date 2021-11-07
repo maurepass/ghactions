@@ -36,48 +36,45 @@ jobs:
         run: |
           python manage.py test
 
-      - name: check system version
-        run: |
-          cat /etc/*rel*
 
-#  staging_deploy:
-#    needs: [build]
-#    runs-on: ubuntu-latest
-#    if: github.ref == 'refs/heads/main'
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.9
-##      - name: Create SSH config
-##        run: |
-##          mkdir ~/.ssh
-##          echo $SSH_CONFIG >> ~/.ssh/config
-##        env:
-##          SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
-#      - name: Install SSH Key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-#      - name: Adding Known Hosts
-#        run: |
-#          ssh-keyscan -p 2222 -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-#          ssh-keyscan -t rsa -H github.com >> ~/.ssh/known_hosts
-#      - name: Prepare before deploy
-#        run: |
-#          sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
-#          eval `ssh-agent -s`
-#          ssh-add
-#          ssh-add -L
-#          python -m pip install --upgrade pip
-#          pip install -r requirements.txt
-#          mkdir -p ~/.ssh
-#      - name: Deploy staging
-#        run: |
-#          pwd
-#          fab stage deploy:branch=main
+  staging_deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Create SSH config
+        run: |
+          mkdir ~/.ssh
+          echo $SSH_CONFIG >> ~/.ssh/config
+        env:
+          SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: |
+          ssh-keyscan -p 2222 -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -t rsa -H github.com >> ~/.ssh/known_hosts
+      - name: Prepare before deploy
+        run: |
+          sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
+          eval `ssh-agent -s`
+          ssh-add
+          ssh-add -L
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          mkdir -p ~/.ssh
+      - name: Deploy staging
+        run: |
+          pwd
+          fab stage deploy:branch=main
 
 #  production_deploy:
 #    needs: [build, staging_deploy]
