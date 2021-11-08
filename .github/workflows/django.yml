@@ -32,6 +32,8 @@ jobs:
       - name: test secret
         env:
           TEST_SECRET: ${{ secrets.TEST_SECRET }}
+        run: |
+          pwd
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
