@@ -24,7 +24,12 @@ jobs:
           STEPS_CONTEXT: ${{ toJSON(steps) }}
         run: echo "$STEPS_CONTEXT"
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: test secret
+        env:
+          TEST_SECRET: ${{ secrets.TEST_SECRET }}
+        run: |
+          - echo $TEST_SECRET
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
