@@ -2,6 +2,11 @@ name: Django CI
 
 on:
   workflow_dispatch:
+    inputs:
+      deployment-env:
+        description: Deployment environemt "stage" or "prod"
+        required: true
+
   push:
     branches: [ main ]
   pull_request:
@@ -91,7 +96,7 @@ jobs:
       - name: Deploy staging
         run: |
           pwd
-          fab stage deploy:branch=main
+          fab ${{ github.event.inputs.deployment-env}} deploy:branch=main
 
 #  production_deploy:
 #    needs: [build, staging_deploy]
