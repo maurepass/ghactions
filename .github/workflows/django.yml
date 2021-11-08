@@ -41,43 +41,45 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    env:
+      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Create SSH config
-        run: |
-          mkdir ~/.ssh
-          cat << EOF > ~/.ssh/config
-          Host ghactions
-          User ghactions_stage
-          HostName ghactions.deployed.space
-          Port 2222
-          ForwardAgent yes
-          EOF
-      - name: Cat ssh config
-        run: |
-          echo $CAT_SSH
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+#      - name: Create SSH config
+#        run: |
+#          mkdir ~/.ssh
+#          cat << EOF > ~/.ssh/config
+#          Host ghactions
+#          User ghactions_stage
+#          HostName ghactions.deployed.space
+#          Port 2222
+#          ForwardAgent yes
+#          EOF
+#      - name: Cat ssh config
+#        run: |
+#          echo $CAT_SSH
+#      - name: Install SSH Key
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
       - name: Adding Known Hosts
         run: |
           ssh-keyscan -p 2222 -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh-keyscan -t rsa -H github.com >> ~/.ssh/known_hosts
+      - name: Setup SSH Keys and known_hosts
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
       - name: Prepare before deploy
         run: |
           sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
-          eval `ssh-agent -s`
-          ssh-add
-          ssh-add -L
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          mkdir -p ~/.ssh
       - name: Deploy staging
         run: |
           pwd
