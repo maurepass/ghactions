@@ -7,10 +7,10 @@ on:
         description: Deployment environemt "stage" or "prod"
         required: true
 
-  push:
-    branches: [ main ]
-  pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    types: [ assigned, opened, synchronize, reopened ]
 
 jobs:
   build:
@@ -32,8 +32,6 @@ jobs:
       - name: test secret
         env:
           TEST_SECRET: ${{ secrets.TEST_SECRET }}
-        run: |
-          - echo $TEST_SECRET
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
