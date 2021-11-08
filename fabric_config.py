@@ -46,7 +46,7 @@ class StageConfig(BaseConfig):
     def __init__(self):
         super(StageConfig, self).__init__()
         self.env.settings = "ghactions.settings"
-        self.env.hosts = ["ghactions.deployed.space"]
+        self.env.hosts = ["ghactions_stage@ghactions.deployed.space:2222"]
         self.env.envname = "stage"
         self.env.roledefs = {
             "webserver": self.env.hosts,
