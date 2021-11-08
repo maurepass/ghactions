@@ -69,6 +69,7 @@ jobs:
 #          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
       - name: Adding Known Hosts
         run: |
+          mkdir ~/.ssh
           ssh-keyscan -p 2222 -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh-keyscan -t rsa -H github.com >> ~/.ssh/known_hosts
       - name: Setup SSH Keys and known_hosts
