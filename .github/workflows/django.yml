@@ -86,12 +86,12 @@ jobs:
 #          mkdir -p ~/.ssh
 #          ssh-keyscan -p 2222 -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 #
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+#      - name: Setup upterm session
+#        uses: lhotari/action-upterm@v1
       - name: Adding Known Hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -p 2222 -t rsa -H brelag.deployed.space >> ~/.ssh/known_hosts
+          ssh-keyscan -p 2222 -t ed25519 -H brelag.deployed.space >> ~/.ssh/known_hosts
 
       - name: Setup SSH Keys and known_hosts
         run: |
