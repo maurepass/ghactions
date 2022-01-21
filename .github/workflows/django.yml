@@ -59,8 +59,8 @@ jobs:
       SSH_AUTH_SOCK: /tmp/ssh_agent.sock
     steps:
       - uses: actions/checkout@v2
-       - name: connect
-         run: ssh -i "${{ secrets.SSH_PUBLIC_FRONTEND }}" brelag_stage_front@brelag.deployed.space "ls -la"
+      - name: connect
+        run: ssh -i "${{ secrets.SSH_PUBLIC_FRONTEND }}" brelag_stage_front@brelag.deployed.space "ls -la"
 
 #      - name: Set up Python
 #        uses: actions/setup-python@v2
