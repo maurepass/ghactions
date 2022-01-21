@@ -67,8 +67,8 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PUBLIC_FRONTEND }}" > ~/.ssh/id_rsa
           chmod 400 ~/.ssh/id_rsa
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+#      - name: Setup upterm session
+#        uses: lhotari/action-upterm@v1
       - name: connect
         run: ssh brelag_stage_front@brelag.deployed.space "ls -la"
 
