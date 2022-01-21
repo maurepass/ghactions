@@ -70,7 +70,7 @@ jobs:
 #      - name: Setup upterm session
 #        uses: lhotari/action-upterm@v1
       - name: connect
-        run: ssh brelag_stage_front@brelag.deployed.space "ls -la"
+        run: ssh brelag_stage_front@brelag.deployed.space "rm -fr dist && tar zxvf dist.tar.gz"
 
 #      - name: Set up Python
 #        uses: actions/setup-python@v2
