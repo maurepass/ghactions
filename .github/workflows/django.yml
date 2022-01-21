@@ -57,6 +57,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     env:
       SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      STAGING_HOST: brelag.deployed.space
     steps:
       - uses: actions/checkout@v2
       - name: Adding Known Hosts for the staging server
@@ -70,7 +71,8 @@ jobs:
 #      - name: Setup upterm session
 #        uses: lhotari/action-upterm@v1
       - name: connect
-        run: ssh brelag_stage_front@brelag.deployed.space "rm -fr dist && tar zxvf dist.tar.gz"
+#        run: ssh brelag_stage_front@brelag.deployed.space "rm -fr dist && tar zxvf dist.tar.gz"
+        run: ssh brelag_stage_front@$STAGING_HOST "ls -la"
 
 #      - name: Set up Python
 #        uses: actions/setup-python@v2
