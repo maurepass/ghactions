@@ -1,134 +1,31 @@
-name: Django CI
-
-on:
-  workflow_dispatch:
-    inputs:
-      deployment-env:
-        description: Deployment environemt. Write "stage" or "prod"
-        required: true
-      git-ref:
-        description: Git Ref (Optional)
-        required: false
-
-
-  push:
-    branches: [ main ]
-#  pull_request:
-#    types: [ assigned, opened, synchronize, reopened ]
+name: Context testing
+on: push
 
 jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Dump GitHub context
-#        env:
-#          GITHUB_CONTEXT: ${{ toJSON(github) }}
-#        run: echo "$GITHUB_CONTEXT"
-#      - name: Dump job context
-#        env:
-#          JOB_CONTEXT: ${{ toJSON(job) }}
-#        run: echo "$JOB_CONTEXT"
-#      - name: Dump steps context
-#        env:
-#          STEPS_CONTEXT: ${{ toJSON(steps) }}
-#        run: echo "$STEPS_CONTEXT"
-#      - uses: actions/checkout@v2
-#      - name: test secret
-#        env:
-#          TEST_SECRET: ${{ secrets.TEST_SECRET }}
-#        run: |
-#          pwd
-#      - name: Set up Python
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.9
-#      - name: Install Dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install -r requirements.txt
-#      - name: Run Tests
-#        run: |
-#          python manage.py test
-
-
-  staging_deploy:
-#    needs: [build]
+  dump_contexts_to_log:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    env:
-      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      STAGING_HOST: brelag.deployed.space
     steps:
-      - uses: actions/checkout@v2
-      - name: Adding Known Hosts for the staging server
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H brelag.deployed.space >> ~/.ssh/known_hosts
-      - name: create id_rsa
-        run: |
-          echo "${{ secrets.SSH_PUBLIC_FRONTEND }}" > ~/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
-#      - name: Setup upterm session
-#        uses: lhotari/action-upterm@v1
-      - name: connect
-#        run: ssh brelag_stage_front@brelag.deployed.space "rm -fr dist && tar zxvf dist.tar.gz"
-        run: ssh brelag_stage_front@$STAGING_HOST "ls -la"
-
-#      - name: Set up Python
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.9
-#      - name: Create SSH config
-#        run: |
-#          mkdir ~/.ssh
-#          cat << EOF > ~/.ssh/config
-#          Host ghactions
-#          User ghactions_stage
-#          HostName ghactions.deployed.space
-#          Port 2222
-#          ForwardAgent yes
-#          EOF
-#      - name: Cat ssh config
-#        run: |
-#          echo $CAT_SSH
-#      - name: Install SSH Key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-#      - name: Adding Known Hosts
-#        run: |
-#          mkdir -p ~/.ssh
-#          ssh-keyscan -p 2222 -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-#
-#      - name: Setup upterm session
-#        uses: lhotari/action-upterm@v1
-#      - name: Adding Known Hosts
-#        run: |
-#          mkdir -p ~/.ssh
-#          ssh-keyscan -p 2222 -t ed25519 -H brelag.deployed.space >> ~/.ssh/known_hosts
-
-
-
-#      - name: Setup SSH Keys and known_hosts
-#        run: |
-#          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-#          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
-#      - name: Prepare before deploy
-#        run: |
-#          sudo apt-get install -yqq git gcc g++ binutils musl-dev libffi-dev libssl-dev make openssh-client
-#          python -m pip install --upgrade pip
-#          pip install -r requirements.txt
-#      - name: Setup upterm session
-#        uses: lhotari/action-upterm@v1
-#      - name: Deploy staging
-#        run: |
-#          pwd
-#          fab ${{ github.event.inputs.deployment-env}} deploy:branch=main
-
-#  production_deploy:
-#    needs: [build, staging_deploy]
-#    runs-on: ubuntu-latest
-#    if: github.ref == 'refs/heads/main'
-#    steps:
-#      - run: echo ${{ github.ref }}
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
